@@ -399,8 +399,9 @@ Para la resolución del problema lineal de mínimos cuadrados se utiliza `numpy.
 ```text
 parcial-1/
 ├── notebooks/
-│   ├── investigacion.ipynb
-│   ├── investigacion para 1 semana.ipynb
+│   ├── experimento_24h.ipynb
+│   └── experimento_1semana.ipynb
+├── resultados/
 │   ├── resultados_24h.csv
 │   └── resultados_1semana.csv
 ├── images/
@@ -436,12 +437,12 @@ Se requiere Python 3.12 o superior.
 
 4. Abrir los notebooks con Jupyter o con la extensión de Jupyter de VS Code, seleccionando el kernel del entorno virtual creado:
 
-   - `notebooks/investigacion.ipynb`: experimento principal de 24 horas.
-   - `notebooks/investigacion para 1 semana.ipynb`: experimento complementario de siete días.
+   - `notebooks/experimento_24h.ipynb`: experimento principal de 24 horas.
+   - `notebooks/experimento_1semana.ipynb`: experimento complementario de siete días.
 
    Si se utiliza Jupyter clásico, instalarlo con `pip install jupyter` y ejecutar `jupyter notebook` desde la raíz del proyecto.
 
-5. Ejecutar todas las celdas en orden. Los notebooks leen el dataset con la ruta relativa `../raw-data/`, por lo que deben ejecutarse desde la carpeta `notebooks/`, que es el comportamiento por defecto al abrirlos. Al finalizar, cada notebook exporta su tabla de errores a un archivo CSV dentro de `notebooks/`.
+5. Ejecutar todas las celdas en orden. Los notebooks leen el dataset con la ruta relativa `../raw-data/`, por lo que deben ejecutarse desde la carpeta `notebooks/`, que es el comportamiento por defecto al abrirlos. Al finalizar, cada notebook exporta su tabla de errores a un archivo CSV dentro de `resultados/`.
 
 Para evaluar polinomios de grados 1 a 9 en lugar de 1 a 4, cambiar `range(1, 5)` por `range(1, 10)` en las dos celdas indicadas con un comentario en cada notebook.
 
