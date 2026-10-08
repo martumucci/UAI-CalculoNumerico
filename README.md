@@ -113,6 +113,8 @@ donde $m$ es la cantidad de mediciones disponibles.
 
 ### 4.1. Formulación matricial
 
+La formulación matricial generaliza el procedimiento de mínimos cuadrados presentado para el ajuste lineal, permitiendo calcular los coeficientes de polinomios de distintos grados mediante un mismo procedimiento.
+
 El problema puede expresarse mediante la matriz de diseño:
 
 ```math
