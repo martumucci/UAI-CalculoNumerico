@@ -17,9 +17,9 @@ El objetivo principal es comparar ambos métodos y analizar cómo influyen el gr
 
 Se dispone de un conjunto de observaciones:
 
-$$
+```math
 D=\{(x_i,y_i)\}_{i=1}^{n}
-$$
+```
 
 donde:
 
@@ -61,9 +61,9 @@ El experimento principal utiliza las primeras **24 horas de mediciones**, corres
 
 Se define la variable independiente como el tiempo transcurrido en horas:
 
-$$
+```math
 x_i=\frac{t_i-t_0}{3600}
-$$
+```
 
 donde $t_i-t_0$ se expresa en segundos.
 
@@ -97,17 +97,17 @@ El método de mínimos cuadrados permite encontrar una función que aproxime un 
 
 Para un polinomio de grado $d$, se considera:
 
-$$
+```math
 P_d(x)=a_0+a_1x+a_2x^2+\cdots+a_dx^d
-$$
+```
 
 Los coeficientes $a_0,\ldots,a_d$ se determinan minimizando:
 
-$$
+```math
 E(a_0,\ldots,a_d)=
 \sum_{i=1}^{m}
 \left(y_i-P_d(x_i)\right)^2
-$$
+```
 
 donde $m$ es la cantidad de mediciones disponibles.
 
@@ -115,7 +115,7 @@ donde $m$ es la cantidad de mediciones disponibles.
 
 El problema puede expresarse mediante la matriz de diseño:
 
-$$
+```math
 A=
 \begin{pmatrix}
 1 & x_1 & x_1^2 & \cdots & x_1^d\\
@@ -123,11 +123,11 @@ A=
 \vdots & \vdots & \vdots & & \vdots\\
 1 & x_m & x_m^2 & \cdots & x_m^d
 \end{pmatrix}
-$$
+```
 
 y los vectores:
 
-$$
+```math
 a=
 \begin{pmatrix}
 a_0\\a_1\\\vdots\\a_d
@@ -137,19 +137,19 @@ y=
 \begin{pmatrix}
 y_1\\y_2\\\vdots\\y_m
 \end{pmatrix}
-$$
+```
 
 Se busca minimizar:
 
-$$
+```math
 \|Aa-y\|_2^2
-$$
+```
 
 Las ecuaciones normales asociadas son:
 
-$$
+```math
 A^TAa=A^Ty
-$$
+```
 
 En la implementación se utiliza `numpy.linalg.lstsq`, que resuelve directamente el problema de mínimos cuadrados sin necesidad de formar explícitamente $A^TA$, evitando parte de los problemas de estabilidad numérica asociados a las ecuaciones normales.
 
@@ -197,17 +197,17 @@ Con cuatro nodos distintos se obtiene un polinomio interpolante de grado a lo su
 
 El polinomio de Newton se expresa como:
 
-$$
+```math
 \begin{aligned}
 I_3(x) ={}& f[x_0] + f[x_0,x_1](x-x_0) \\
 &+ f[x_0,x_1,x_2](x-x_0)(x-x_1) \\
 &+ f[x_0,x_1,x_2,x_3](x-x_0)(x-x_1)(x-x_2)
 \end{aligned}
-$$
+```
 
 Los coeficientes se obtienen mediante diferencias divididas:
 
-$$
+```math
 f[x_i,\ldots,x_{i+j}]
 =
 \frac{
@@ -217,13 +217,13 @@ f[x_i,\ldots,x_{i+j-1}]
 }{
 x_{i+j}-x_i
 }
-$$
+```
 
 El polinomio cumple la condición de interpolación:
 
-$$
+```math
 I_3(x_i)=y_i
-$$
+```
 
 para los cuatro nodos seleccionados.
 
@@ -250,17 +250,17 @@ Se utilizan dos métricas.
 
 ### 6.1. Error absoluto medio (MAE)
 
-$$
+```math
 MAE=\frac{1}{n}\sum_{i=1}^{n}|y_i-\hat y_i|
-$$
+```
 
 Representa la magnitud media de los errores, expresada directamente en °C.
 
 ### 6.2. Error cuadrático medio (MSE)
 
-$$
+```math
 MSE=\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat y_i)^2
-$$
+```
 
 Penaliza más intensamente las diferencias grandes y se utiliza como métrica principal para comparar las configuraciones.
 
@@ -299,7 +299,7 @@ Se mantuvieron las condiciones generales del experimento:
 
 - Ocultamiento aleatorio del 20 % de las temperaturas.
 - Semilla pseudoaleatoria fija `42`.
-- Polinomios de mínimos cuadrados de grados 1 a 9.
+- Polinomios de mínimos cuadrados de grados 1 a 4.
 - Interpolación local de Newton con cuatro nodos.
 - Evaluación mediante MAE y MSE.
 
@@ -317,18 +317,13 @@ La variable temporal se normalizó al intervalo $[0,1]$ para mejorar la escala n
 | Mínimos cuadrados — grado 2 | 2,7528 | 13,0088 |
 | Mínimos cuadrados — grado 3 | 2,7766 | 12,6115 |
 | Mínimos cuadrados — grado 4 | 2,4884 | 8,8437 |
-| Mínimos cuadrados — grado 5 | 1,5351 | 4,3044 |
-| Mínimos cuadrados — grado 6 | 1,5256 | 4,1805 |
-| Mínimos cuadrados — grado 7 | 1,2884 | 3,5245 |
-| Mínimos cuadrados — grado 8 | 1,2897 | 3,4598 |
-| Mínimos cuadrados — grado 9 | 1,3338 | 3,3994 |
 | **Newton — 4 nodos** | **0,0790** | **0,0203** |
 
 ### 7.2. Análisis
 
 Al ampliar el intervalo temporal se observó un aumento importante del error de los polinomios globales.
 
-Para siete días, el mejor resultado de mínimos cuadrados según MSE correspondió al grado 9, con un valor de 3,3994 °C².
+Para siete días, el mejor resultado de mínimos cuadrados correspondió al grado 4, con un MSE de 8,8437 °C² y un MAE de 2,4884 °C, valores más de cien veces superiores a los obtenidos en 24 horas con el mismo grado.
 
 El comportamiento térmico durante una semana presentó variaciones que resultaron difíciles de representar mediante un único polinomio global de los grados evaluados.
 
@@ -345,7 +340,7 @@ Sin embargo, los experimentos utilizan diferentes cantidades y posiciones de obs
 | Tipo de aproximación | Global | Local |
 | Observaciones utilizadas | Todas las disponibles | Cuatro nodos cercanos |
 | Condición sobre los nodos | Minimiza residuos cuadrados | Pasa exactamente por los nodos seleccionados |
-| Grado evaluado | 1 a 9 | Hasta 3 |
+| Grado evaluado | 1 a 9 (24 h), 1 a 4 (7 días) | Hasta 3 |
 | Ventaja principal | Representa tendencias generales | Reconstruye variaciones locales |
 | Limitación principal | Puede perder detalles locales | Puede ser sensible al ruido y a la selección de nodos |
 
