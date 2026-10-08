@@ -17,18 +17,18 @@ El objetivo principal es comparar ambos métodos y analizar cómo influyen el gr
 
 Se dispone de un conjunto de observaciones:
 
-\[
+$$
 D=\{(x_i,y_i)\}_{i=1}^{n}
-\]
+$$
 
 donde:
 
-- \(x_i\) representa el tiempo transcurrido desde el comienzo del período estudiado.
-- \(y_i\) representa la temperatura del aire, expresada en grados Celsius.
+- $x_i$ representa el tiempo transcurrido desde el comienzo del período estudiado.
+- $y_i$ representa la temperatura del aire, expresada en grados Celsius.
 
 Se selecciona aleatoriamente un subconjunto de observaciones y se ocultan sus valores de temperatura, conservando las coordenadas temporales correspondientes.
 
-El problema consiste en estimar cada temperatura faltante \(\hat y_i\) utilizando exclusivamente las mediciones disponibles.
+El problema consiste en estimar cada temperatura faltante $\hat y_i$ utilizando exclusivamente las mediciones disponibles.
 
 Una vez reconstruidos los valores, se comparan las estimaciones con las temperaturas originales para determinar el error de cada método.
 
@@ -46,8 +46,8 @@ Para este estudio se seleccionan únicamente:
 
 | Columna original | Variable | Descripción |
 |---|---|---|
-| `Date Time` | \(x\) | Fecha y hora de la medición, transformada en tiempo numérico |
-| `T (degC)` | \(y\) | Temperatura del aire en °C |
+| `Date Time` | $x$ | Fecha y hora de la medición, transformada en tiempo numérico |
+| `T (degC)` | $y$ | Temperatura del aire en °C |
 
 La exploración inicial confirmó que ambas columnas contienen 420.551 valores no nulos.
 
@@ -61,15 +61,15 @@ El experimento principal utiliza las primeras **24 horas de mediciones**, corres
 
 Se define la variable independiente como el tiempo transcurrido en horas:
 
-\[
+$$
 x_i=\frac{t_i-t_0}{3600}
-\]
+$$
 
-donde \(t_i-t_0\) se expresa en segundos.
+donde $t_i-t_0$ se expresa en segundos.
 
 Posteriormente, se realiza un experimento complementario con una ventana de **siete días**, equivalente a 1.008 observaciones.
 
-En el experimento semanal, la variable temporal se normaliza al intervalo \([0,1]\) para mejorar la escala numérica de las potencias utilizadas en los ajustes polinómicos.
+En el experimento semanal, la variable temporal se normaliza al intervalo $[0,1]$ para mejorar la escala numérica de las potencias utilizadas en los ajustes polinómicos.
 
 ### 3.2. Simulación de mediciones faltantes
 
@@ -95,27 +95,27 @@ Los valores originales se conservan por separado y se utilizan únicamente duran
 
 El método de mínimos cuadrados permite encontrar una función que aproxime un conjunto de observaciones, minimizando la suma de los cuadrados de las diferencias entre los valores medidos y los estimados.
 
-Para un polinomio de grado \(d\), se considera:
+Para un polinomio de grado $d$, se considera:
 
-\[
+$$
 P_d(x)=a_0+a_1x+a_2x^2+\cdots+a_dx^d
-\]
+$$
 
-Los coeficientes \(a_0,\ldots,a_d\) se determinan minimizando:
+Los coeficientes $a_0,\ldots,a_d$ se determinan minimizando:
 
-\[
+$$
 E(a_0,\ldots,a_d)=
 \sum_{i=1}^{m}
 \left(y_i-P_d(x_i)\right)^2
-\]
+$$
 
-donde \(m\) es la cantidad de mediciones disponibles.
+donde $m$ es la cantidad de mediciones disponibles.
 
 ### 4.1. Formulación matricial
 
 El problema puede expresarse mediante la matriz de diseño:
 
-\[
+$$
 A=
 \begin{pmatrix}
 1 & x_1 & x_1^2 & \cdots & x_1^d\\
@@ -123,11 +123,11 @@ A=
 \vdots & \vdots & \vdots & & \vdots\\
 1 & x_m & x_m^2 & \cdots & x_m^d
 \end{pmatrix}
-\]
+$$
 
 y los vectores:
 
-\[
+$$
 a=
 \begin{pmatrix}
 a_0\\a_1\\\vdots\\a_d
@@ -137,21 +137,21 @@ y=
 \begin{pmatrix}
 y_1\\y_2\\\vdots\\y_m
 \end{pmatrix}
-\]
+$$
 
 Se busca minimizar:
 
-\[
+$$
 \|Aa-y\|_2^2
-\]
+$$
 
 Las ecuaciones normales asociadas son:
 
-\[
+$$
 A^TAa=A^Ty
-\]
+$$
 
-En la implementación se utiliza `numpy.linalg.lstsq`, que resuelve directamente el problema de mínimos cuadrados sin necesidad de formar explícitamente \(A^TA\), evitando parte de los problemas de estabilidad numérica asociados a las ecuaciones normales.
+En la implementación se utiliza `numpy.linalg.lstsq`, que resuelve directamente el problema de mínimos cuadrados sin necesidad de formar explícitamente $A^TA$, evitando parte de los problemas de estabilidad numérica asociados a las ecuaciones normales.
 
 La matriz de diseño se construye explícitamente a partir de las potencias de las observaciones temporales.
 
@@ -197,22 +197,17 @@ Con cuatro nodos distintos se obtiene un polinomio interpolante de grado a lo su
 
 El polinomio de Newton se expresa como:
 
-\[
-I_3(x)=f[x_0]
-+f[x_0,x_1](x-x_0)
-\]
-
-\[
-+f[x_0,x_1,x_2](x-x_0)(x-x_1)
-\]
-
-\[
-+f[x_0,x_1,x_2,x_3](x-x_0)(x-x_1)(x-x_2)
-\]
+$$
+\begin{aligned}
+I_3(x) ={}& f[x_0] + f[x_0,x_1](x-x_0) \\
+&+ f[x_0,x_1,x_2](x-x_0)(x-x_1) \\
+&+ f[x_0,x_1,x_2,x_3](x-x_0)(x-x_1)(x-x_2)
+\end{aligned}
+$$
 
 Los coeficientes se obtienen mediante diferencias divididas:
 
-\[
+$$
 f[x_i,\ldots,x_{i+j}]
 =
 \frac{
@@ -222,13 +217,13 @@ f[x_i,\ldots,x_{i+j-1}]
 }{
 x_{i+j}-x_i
 }
-\]
+$$
 
 El polinomio cumple la condición de interpolación:
 
-\[
+$$
 I_3(x_i)=y_i
-\]
+$$
 
 para los cuatro nodos seleccionados.
 
@@ -255,17 +250,17 @@ Se utilizan dos métricas.
 
 ### 6.1. Error absoluto medio (MAE)
 
-\[
+$$
 MAE=\frac{1}{n}\sum_{i=1}^{n}|y_i-\hat y_i|
-\]
+$$
 
 Representa la magnitud media de los errores, expresada directamente en °C.
 
 ### 6.2. Error cuadrático medio (MSE)
 
-\[
+$$
 MSE=\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat y_i)^2
-\]
+$$
 
 Penaliza más intensamente las diferencias grandes y se utiliza como métrica principal para comparar las configuraciones.
 
@@ -308,7 +303,7 @@ Se mantuvieron las condiciones generales del experimento:
 - Interpolación local de Newton con cuatro nodos.
 - Evaluación mediante MAE y MSE.
 
-La variable temporal se normalizó al intervalo \([0,1]\) para mejorar la escala numérica del ajuste polinómico.
+La variable temporal se normalizó al intervalo $[0,1]$ para mejorar la escala numérica del ajuste polinómico.
 
 ![Comparación de aproximaciones polinómicas durante una semana](images/fig3_polinomios_1semana.png)
 
