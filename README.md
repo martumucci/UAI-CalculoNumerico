@@ -159,7 +159,7 @@ La matriz de diseño se construye explícitamente a partir de las potencias de l
 
 ### 4.2. Evaluación de grados polinómicos
 
-Se ajustaron polinomios de grados 1 a 9, utilizando exclusivamente las mediciones disponibles.
+Se ajustaron polinomios de grados 1 a 5, utilizando exclusivamente las mediciones disponibles.
 
 Para cada grado se realizaron los siguientes pasos:
 
@@ -169,11 +169,11 @@ Para cada grado se realizaron los siguientes pasos:
 4. Comparar las estimaciones con las temperaturas originales.
 5. Calcular las métricas de error.
 
-El análisis se inició con grados 1 a 4 y posteriormente se amplió hasta grado 9 para explorar el efecto de una mayor complejidad polinómica.
+El análisis se inició con grados 1 a 4 y posteriormente se amplió hasta grado 5 para explorar el efecto de una mayor complejidad polinómica.
 
-![Comparación de aproximaciones polinómicas de grados 1 a 4 durante 24 horas](images/fig2_polinomios_24h.png)
+![Comparación de aproximaciones polinómicas de grados 1 a 5 durante 24 horas](images/fig2_polinomios_24h.png)
 
-*Figura 2. Ajustes polinómicos sobre las mediciones disponibles del intervalo de 24 horas. Se muestran únicamente los grados 1 a 4 para facilitar la visualización. Los grados 5 a 9 también fueron evaluados numéricamente.*
+*Figura 2. Ajustes polinómicos de grados 1 a 5 sobre las mediciones disponibles del intervalo de 24 horas.*
 
 ### 4.3. Interpretación
 
@@ -277,10 +277,6 @@ En ambos casos, valores menores indican una reconstrucción más precisa.
 | Mínimos cuadrados — grado 3 | 0,3453 | 0,1607 |
 | Mínimos cuadrados — grado 4 | 0,2225 | 0,0740 |
 | Mínimos cuadrados — grado 5 | 0,2154 | 0,0769 |
-| Mínimos cuadrados — grado 6 | 0,2340 | 0,0892 |
-| Mínimos cuadrados — grado 7 | 0,2554 | 0,0949 |
-| Mínimos cuadrados — grado 8 | 0,2284 | 0,0848 |
-| Mínimos cuadrados — grado 9 | 0,2307 | 0,0859 |
 | **Newton — 4 nodos** | **0,0485** | **0,0036** |
 
 Entre los polinomios globales, el grado 4 obtuvo el menor MSE (0,0740 °C²), mientras que el grado 5 obtuvo el menor MAE (0,2154 °C).
@@ -301,7 +297,7 @@ Se mantuvieron las condiciones generales del experimento:
 
 - Ocultamiento aleatorio del 20 % de las temperaturas.
 - Semilla pseudoaleatoria fija `42`.
-- Polinomios de mínimos cuadrados de grados 1 a 4.
+- Polinomios de mínimos cuadrados de grados 1 a 5.
 - Interpolación local de Newton con cuatro nodos.
 - Evaluación mediante MAE y MSE.
 
@@ -319,13 +315,14 @@ La variable temporal se normalizó al intervalo $[0,1]$ para mejorar la escala n
 | Mínimos cuadrados — grado 2 | 2,7528 | 13,0088 |
 | Mínimos cuadrados — grado 3 | 2,7766 | 12,6115 |
 | Mínimos cuadrados — grado 4 | 2,4884 | 8,8437 |
+| Mínimos cuadrados — grado 5 | 1,5351 | 4,3044 |
 | **Newton — 4 nodos** | **0,0790** | **0,0203** |
 
 ### 7.2. Análisis
 
 Al ampliar el intervalo temporal se observó un aumento importante del error de los polinomios globales.
 
-Para siete días, el mejor resultado de mínimos cuadrados correspondió al grado 4, con un MSE de 8,8437 °C² y un MAE de 2,4884 °C, valores más de cien veces superiores a los obtenidos en 24 horas con el mismo grado.
+Para siete días, el mejor resultado de mínimos cuadrados correspondió al grado 5, con un MSE de 4,3044 °C² y un MAE de 1,5351 °C, valores más de cincuenta veces superiores a los obtenidos en 24 horas con el mismo grado.
 
 El comportamiento térmico durante una semana presentó variaciones que resultaron difíciles de representar mediante un único polinomio global de los grados evaluados.
 
@@ -342,7 +339,7 @@ Sin embargo, los experimentos utilizan diferentes cantidades y posiciones de obs
 | Tipo de aproximación | Global | Local |
 | Observaciones utilizadas | Todas las disponibles | Cuatro nodos cercanos |
 | Condición sobre los nodos | Minimiza residuos cuadrados | Pasa exactamente por los nodos seleccionados |
-| Grado evaluado | 1 a 9 (24 h), 1 a 4 (7 días) | Hasta 3 |
+| Grado evaluado | 1 a 5 | Hasta 3 |
 | Ventaja principal | Representa tendencias generales | Reconstruye variaciones locales |
 | Limitación principal | Puede perder detalles locales | Puede ser sensible al ruido y a la selección de nodos |
 
@@ -436,7 +433,7 @@ Se requiere Python 3.12 o superior.
 
 5. Ejecutar todas las celdas en orden. Los notebooks leen el dataset con la ruta relativa `../raw-data/`, por lo que deben ejecutarse desde la carpeta `notebooks/`, que es el comportamiento por defecto al abrirlos. Al finalizar, cada notebook exporta su tabla de errores a un archivo CSV dentro de `resultados/`.
 
-Para evaluar polinomios de grados 1 a 9 en lugar de 1 a 4, cambiar `range(1, 5)` por `range(1, 10)` en las dos celdas indicadas con un comentario en cada notebook.
+Para evaluar polinomios de grados 1 a 9 en lugar de 1 a 5, cambiar `range(1, 6)` por `range(1, 10)` en las dos celdas indicadas con un comentario en cada notebook.
 
 ## 11. Conclusiones
 
