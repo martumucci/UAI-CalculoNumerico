@@ -1,0 +1,21 @@
+# Entorno virtual
+venv/
+.venv/
+
+# Dataset crudo (42 MB, se descarga de Kaggle según el README)
+raw-data/*.csv
+
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Editor / sistema
+.vscode/
+.idea/
+.DS_Store
+
+# Archivos personales fuera del repo
+ignore/
